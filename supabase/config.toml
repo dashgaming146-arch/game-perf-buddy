@@ -1,0 +1,4 @@
+project_id = "vzcoqblqfecxrwaebhge"
+
+[functions.analyze-game-specs]
+verify_jwt = false

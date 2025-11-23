@@ -46,40 +46,32 @@ const Index = () => {
 
   const handleAnalyze = async (specs: GameSpecs) => {
     setIsAnalyzing(true);
-    // TODO: Call AI backend for analysis
-    // For now, simulate with timeout
-    setTimeout(() => {
-      setAnalysisResult({
-        canRun: true,
-        minimumMet: true,
-        recommendedMet: true,
-        fpsEstimates: {
-          low720p: 90,
-          medium1080p: 60,
-          high1080p: 45,
-          ultra1440p: 30,
-        },
-        recommendations: {
-          resolution: "1080p",
-          settings: "Medium",
-          expectedFps: 60,
-          reasoning: "Your system exceeds the minimum requirements. For optimal performance, we recommend Medium settings at 1080p for smooth 60 FPS gameplay.",
-        },
-        gameRequirements: {
-          minimum: {
-            gpu: "GTX 960",
-            cpu: "i5-2500K",
-            ram: "8GB",
+    
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-game-specs`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          recommended: {
-            gpu: "RTX 2060",
-            cpu: "i7-8700K",
-            ram: "16GB",
-          },
-        },
-      });
+          body: JSON.stringify(specs),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to analyze specs");
+      }
+
+      const result = await response.json();
+      setAnalysisResult(result);
+    } catch (error) {
+      console.error("Error analyzing specs:", error);
+      // Show error to user
+      alert("Failed to analyze specs. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
   return (
