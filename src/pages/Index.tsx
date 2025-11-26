@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Hero } from "@/components/Hero";
 import { SpecsInput } from "@/components/SpecsInput";
 import { AnalysisResults } from "@/components/AnalysisResults";
+import { Footer } from "@/components/Footer";
 
 export interface GameSpecs {
   game: string;
@@ -81,6 +82,7 @@ const Index = () => {
         <SpecsInput onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
         {analysisResult && <AnalysisResults result={analysisResult} />}
       </main>
+      <Footer />
     </div>
   );
 };
